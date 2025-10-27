@@ -1,0 +1,36 @@
+services:
+  postgres:
+    container_name: pdfsorgu-pgv
+    image: pgvector/pgvector:pg18-trixie
+    restart: always
+
+    environment:
+      POSTGRES_USER: userpgv
+      POSTGRES_PASSWORD: passpgv
+      POSTGRES_DB: pdfsorgu-db
+
+    ports:
+      - "5432:5432"
+
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+      - ./init-scripts:/docker-entrypoint-initdb.d
+
+  ollama:
+    container_name: pdfsorgu-ollama
+    image: ollama/ollama:latest
+    restart: always
+
+    ports:
+      - "11434:11434"
+
+    volumes:
+      - ollama_models:/root/.ollama
+
+    depends_on:
+      - postgres
+
+
+volumes:
+  pgdata:
+  ollama_models:
