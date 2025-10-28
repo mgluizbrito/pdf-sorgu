@@ -30,3 +30,15 @@ spring:
       chat:
         options:
           model: mistral
+
+  servlet:
+    multipart:
+      max-file-size: 20MB
+      max-request-size: 20MB
+
+logging:
+  level:
+    org.springframework.web: ERROR
+
+file:
+  upload-dir: uploads
