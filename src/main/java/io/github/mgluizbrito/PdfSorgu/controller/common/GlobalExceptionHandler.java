@@ -2,6 +2,7 @@ package io.github.mgluizbrito.PdfSorgu.controller.common;
 
 import io.github.mgluizbrito.PdfSorgu.dto.ExceptionResponse;
 import io.github.mgluizbrito.PdfSorgu.dto.ExceptionsField;
+import io.github.mgluizbrito.PdfSorgu.exceptions.InvalidFieldException;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.validation.FieldError;
@@ -30,6 +31,14 @@ public class GlobalExceptionHandler {
                 HttpStatus.UNPROCESSABLE_ENTITY.value(),
                 "Erro de Validação",
                 ErrosList);
+    }
+
+    @ExceptionHandler(InvalidFieldException.class)
+    @ResponseStatus(HttpStatus.UNPROCESSABLE_ENTITY)
+    public ExceptionResponse handlerInvalidFieldException(InvalidFieldException e) {
+        return new ExceptionResponse(
+                HttpStatus.UNPROCESSABLE_ENTITY.value(), "Invalid Field", List.of(new ExceptionsField(e.getField(), e.getMessage()))
+        );
     }
 
 //    @ExceptionHandler(AccessDeniedException.class)
