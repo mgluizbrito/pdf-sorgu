@@ -31,14 +31,20 @@ spring:
         options:
           model: mistral
 
+    vectorstore:
+      pgvector:
+        initialize-schema: true
+        index-type: HNSW
+        distance-type: COSINE_DISTANCE
+
   servlet:
     multipart:
       max-file-size: 20MB
       max-request-size: 20MB
 
-logging:
-  level:
-    org.springframework.web: ERROR
+#logging:
+#  level:
+#    org.springframework.web: ERROR
 
 file:
   upload-dir: uploads

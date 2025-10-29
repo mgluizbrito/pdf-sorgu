@@ -31,6 +31,7 @@ dependencies {
 	implementation("org.springframework.boot:spring-boot-starter-web")
 	implementation("org.springframework.ai:spring-ai-starter-vector-store-pgvector")
 	implementation("org.springframework.ai:spring-ai-starter-model-ollama")
+	implementation("org.springframework.ai:spring-ai-pdf-document-reader")
 
 
 	compileOnly("org.projectlombok:lombok")
