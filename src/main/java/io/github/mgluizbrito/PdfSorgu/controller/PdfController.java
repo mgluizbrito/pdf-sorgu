@@ -1,9 +1,12 @@
 package io.github.mgluizbrito.PdfSorgu.controller;
 
 import io.github.mgluizbrito.PdfSorgu.dto.UploadResponseDTO;
+import io.github.mgluizbrito.PdfSorgu.exceptions.DuplicateRecordException;
 import io.github.mgluizbrito.PdfSorgu.exceptions.InvalidFieldException;
 import io.github.mgluizbrito.PdfSorgu.properties.FileStorageProperties;
 import io.github.mgluizbrito.PdfSorgu.service.DocumentService;
+import io.github.mgluizbrito.PdfSorgu.service.HashService;
+import lombok.SneakyThrows;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.util.StringUtils;
@@ -11,7 +14,10 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
+import java.io.File;
+import java.io.FileInputStream;
 import java.io.IOException;
+import java.io.InputStream;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -19,19 +25,17 @@ import java.util.List;
 import java.util.Objects;
 import java.util.UUID;
 
+import static io.github.mgluizbrito.PdfSorgu.utils.FileUploadUtils.*;
+
 @RestController
 @RequestMapping("v1/pdf")
 public class PdfController {
 
     private final DocumentService service;
     private final Path fileStorageLocation;
+    private final HashService hash;
 
-    public PdfController(DocumentService service, FileStorageProperties fileStorageProperties) {
-        this.service = service;
-        fileStorageLocation = Paths.get(fileStorageProperties.getUploadDir())
-                .toAbsolutePath().normalize();
-    }
-
+    @SneakyThrows
     @PostMapping
     public ResponseEntity<UploadResponseDTO> upload(@RequestParam("file") MultipartFile file){
         if (file == null || file.isEmpty()) throw new InvalidFieldException("file", "You must to pass a file");
@@ -45,12 +49,17 @@ public class PdfController {
             throw new InvalidFieldException("file", "File type not supported. Only PDF files are allowed (Expected: " + PDF_MIME_TYPE + ", Received: " + file.getContentType() + ").");
         }
 
+        String fileHash;
+        File tempFile = convertMultipartFileToFile(file, "hash_validation");
+        try (InputStream is = new FileInputStream(tempFile)) { fileHash = hash.calculateFileHash(is); }
+        if (service.existsByHash(fileHash)) throw new DuplicateRecordException("Duplicate document already processed: " + newFileId);
+
         try{
 
             Path targetLocation = fileStorageLocation.resolve(newFileName);
             file.transferTo(targetLocation);
 
-            service.processDocument(newFileId, targetLocation, fileName);
+            service.processDocument(newFileId, targetLocation, fileName, fileHash);
 
             String fileUri = ServletUriComponentsBuilder.fromCurrentContextPath()
                     .path("/v1/files/")
@@ -66,6 +75,9 @@ public class PdfController {
 
         } catch (IOException e) {
             return ResponseEntity.badRequest().build();
+
+        }finally {
+            cleanUpTempFile(tempFile);
         }
     }
 
@@ -99,5 +111,12 @@ public class PdfController {
                 .toList();
 
         return ResponseEntity.ok(fileNames);
+    }
+
+    public PdfController(DocumentService service, HashService hash, FileStorageProperties fileStorageProperties) {
+        this.service = service;
+        this.hash = hash;
+        fileStorageLocation = Paths.get(fileStorageProperties.getUploadDir())
+                .toAbsolutePath().normalize();
     }
 }

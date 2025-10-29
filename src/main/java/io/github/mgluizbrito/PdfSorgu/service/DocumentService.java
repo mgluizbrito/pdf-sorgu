@@ -35,7 +35,6 @@ public class DocumentService {
 
     private final DocumentRepository repository;
     private final ChunkService chunkService;
-    private final HashService hash;
     private final TextSplitter splitter;
     private final VectorStore vectorStore;
     private final EmbeddingModel embeddingModel;
@@ -45,14 +44,8 @@ public class DocumentService {
     }
 
     @Transactional
-    public void processDocument(UUID fileId, Path filePath, String fileName) throws IOException {
+    public void processDocument(UUID fileId, Path filePath, String fileName, String fileHash) throws IOException {
         File documentFile = filePath.toFile();
-        String fileHash;
-
-        try (InputStream is = new FileInputStream(documentFile)) {
-            fileHash = hash.calculateFileHash(is);
-        }
-        if (repository.existsByHash(fileHash)) throw new DuplicateRecordException("Duplicate document already processed: " + fileId);
 
         DocumentReader reader = pdfDocumentReader(new FileSystemResource(documentFile));
         List<org.springframework.ai.document.Document> pages = reader.get();
@@ -100,5 +93,9 @@ public class DocumentService {
         return "{" + Stream.of(embedding)
                 .map(String::valueOf)
                 .collect(Collectors.joining(",")) + "}";
+    }
+
+    public boolean existsByHash(String fileHash){
+        return repository.existsByHash(fileHash);
     }
 }
