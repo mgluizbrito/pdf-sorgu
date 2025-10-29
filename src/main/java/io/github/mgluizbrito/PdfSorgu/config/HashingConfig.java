@@ -1,6 +1,6 @@
 package io.github.mgluizbrito.PdfSorgu.config;
 
-import io.github.mgluizbrito.PdfSorgu.utils.HashAlgorithm;
+import io.github.mgluizbrito.PdfSorgu.misc.HashAlgorithm;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
