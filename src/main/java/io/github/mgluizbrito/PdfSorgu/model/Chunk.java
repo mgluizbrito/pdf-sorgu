@@ -14,7 +14,7 @@ public class Chunk {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "document_id", nullable = false)
     private Document document;
 
@@ -29,7 +29,7 @@ public class Chunk {
     muitas vezes ignorando o mapeamento JPA complexo. Usamos String como placeholder
     para a entidade JPA, mas na prática, a lógica de persistência do vetor é do VectorStore.
     */
-    @Column(name = "embedding", columnDefinition = "VECTOR")
+    @Column(name = "embedding_placeholder")
     private String embedding;
 
     @Column(name = "chunk_order")
