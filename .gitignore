@@ -1,3 +1,12 @@
+# 1. Ignora o diretório uploads, o que impede que o git entre nele
+uploads/
+# 2. Reverte a exclusão do próprio diretório uploads
+!uploads/
+# 3. Ignora todos os arquivos dentro do diretório uploads
+uploads/*
+# 4. Reverte a exclusão do arquivo simple.pdf dentro do diretório uploads
+!uploads/simple.pdf
+
 HELP.md
 .gradle
 build/
