@@ -15,7 +15,6 @@ import java.util.UUID;
 public class Document {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.UUID)
     private UUID id;
 
     @Column(name = "file_name", nullable = false)

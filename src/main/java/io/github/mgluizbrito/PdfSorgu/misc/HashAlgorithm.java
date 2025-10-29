@@ -1,4 +1,4 @@
-package io.github.mgluizbrito.PdfSorgu.utils;
+package io.github.mgluizbrito.PdfSorgu.misc;
 
 import java.io.File;
 import java.io.IOException;

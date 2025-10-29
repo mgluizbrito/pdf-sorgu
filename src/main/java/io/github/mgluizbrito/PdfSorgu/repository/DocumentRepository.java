@@ -8,4 +8,6 @@ import java.util.UUID;
 
 @Repository
 public interface DocumentRepository extends JpaRepository<Document, UUID> {
+
+    public boolean existsByHash(String hash);
 }
