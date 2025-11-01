@@ -4,8 +4,6 @@ spring:
   output:
     ansi:
       enabled: ALWAYS
-  profiles:
-    active: dev
 
   datasource:
     url: jdbc:postgresql://localhost:5432/pdfsorgu-db
@@ -20,34 +18,6 @@ spring:
     hibernate:
       ddl-auto: update
     show-sql: true
-
-  ai:
-#    model:
-#      chat: google-genai
-#      embedding: ollama
-
-    google:
-      genai:
-        api-key: ${GEMINI_API_KEY}
-        chat:
-          options:
-            model: gemini-2.0-flash-lite
-
-    ollama:
-      base-url: http://localhost:11434
-
-      embedding:
-        options:
-          model: nomic-embed-text
-      chat:
-        options:
-          model: mistral
-
-    vectorstore:
-      pgvector:
-        initialize-schema: true
-        index-type: HNSW
-        distance-type: COSINE_DISTANCE
 
   servlet:
     multipart:
