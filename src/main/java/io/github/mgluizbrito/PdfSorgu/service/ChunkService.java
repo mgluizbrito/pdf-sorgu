@@ -13,11 +13,11 @@ public class ChunkService {
 
     private final ChunkRepository repository;
 
-    public Chunk save(Chunk chunk){
+    public Chunk save(Chunk chunk) {
         return repository.save(chunk);
     }
 
-    public List<Chunk> saveAll(List<Chunk> chunks){
+    public List<Chunk> saveAll(List<Chunk> chunks) {
         return repository.saveAll(chunks);
     }
 }

@@ -1,6 +1,5 @@
 package io.github.mgluizbrito.PdfSorgu.dto;
 
-import io.github.mgluizbrito.PdfSorgu.dto.ExceptionsField;
 import org.springframework.http.HttpStatus;
 
 import java.util.List;

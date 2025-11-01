@@ -56,7 +56,7 @@ public class AIConfig {
     public ChatModel ollamaChatModel(
             OllamaApi ollamaApi,
             @Value("${spring.ai.ollama.chat.options.model}") String modelName
-    ){
+    ) {
 
         OllamaChatOptions options = OllamaChatOptions.builder()
                 .model(modelName)
@@ -90,7 +90,7 @@ public class AIConfig {
     @Bean
     public Client googleGenAiClient(
             @Value("${spring.ai.google.genai.api-key}") String apiKey
-    ){
+    ) {
 
         return Client.builder()
                 .apiKey(apiKey)

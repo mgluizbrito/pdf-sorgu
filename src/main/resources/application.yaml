@@ -4,6 +4,8 @@ spring:
   output:
     ansi:
       enabled: ALWAYS
+  profiles:
+    active: REQUIRE_MODEL_PROFILE_BY_JAR_ARGUMENT
 
   datasource:
     url: jdbc:postgresql://localhost:5432/pdfsorgu-db

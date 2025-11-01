@@ -1,6 +1,5 @@
 package io.github.mgluizbrito.PdfSorgu.service;
 
-import io.github.mgluizbrito.PdfSorgu.exceptions.DuplicateRecordException;
 import io.github.mgluizbrito.PdfSorgu.model.Chunk;
 import io.github.mgluizbrito.PdfSorgu.model.Document;
 import io.github.mgluizbrito.PdfSorgu.repository.DocumentRepository;
@@ -17,9 +16,7 @@ import org.springframework.core.io.Resource;
 import org.springframework.stereotype.Service;
 
 import java.io.File;
-import java.io.FileInputStream;
 import java.io.IOException;
-import java.io.InputStream;
 import java.nio.file.Path;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
@@ -95,7 +92,7 @@ public class DocumentService {
                 .collect(Collectors.joining(",")) + "}";
     }
 
-    public boolean existsByHash(String fileHash){
+    public boolean existsByHash(String fileHash) {
         return repository.existsByHash(fileHash);
     }
 }

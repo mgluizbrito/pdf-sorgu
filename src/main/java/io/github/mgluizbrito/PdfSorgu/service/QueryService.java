@@ -27,7 +27,7 @@ public class QueryService {
     @Value("classpath:prompts/rag-prompt.st")
     private Resource ragPrompt;
 
-    public String processQuery(UUID fileId, String query){
+    public String processQuery(UUID fileId, String query) {
 
         final String filterExpression = "document_id == '" + fileId.toString() + "'";
 
@@ -41,7 +41,7 @@ public class QueryService {
         return generateResponseWithContext(query, documentsContext);
     }
 
-    public String processQuery(UUID fileId, String query, int topK){
+    public String processQuery(UUID fileId, String query, int topK) {
 
         final String filterExpression = "document_id == '" + fileId.toString() + "'";
 

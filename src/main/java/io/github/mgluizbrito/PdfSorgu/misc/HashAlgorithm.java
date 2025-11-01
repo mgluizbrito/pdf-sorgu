@@ -30,9 +30,9 @@ public interface HashAlgorithm {
      *
      * @param file The {@code File} object representing the file to be hashed.
      * @return The file's hash value as a hexadecimal string.
-     * @throws IOException If an I/O error occurs while reading the file.
+     * @throws IOException              If an I/O error occurs while reading the file.
      * @throws NoSuchAlgorithmException If the specified algorithm is not
-     * available in the environment.
+     *                                  available in the environment.
      */
-     String fileHash(File file) throws IOException, NoSuchAlgorithmException;
+    String fileHash(File file) throws IOException, NoSuchAlgorithmException;
 }

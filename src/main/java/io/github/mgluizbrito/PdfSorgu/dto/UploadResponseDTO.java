@@ -7,5 +7,5 @@ public record UploadResponseDTO(
         String fileName,
         UUID fileId,
         String fileUri
-    ) {
+) {
 }

@@ -19,7 +19,7 @@ public class QueryController {
             @PathVariable("fileId") UUID fileId,
             @RequestParam("q") String query,
             @RequestParam(value = "topK", defaultValue = "3") Integer topK
-    ){
+    ) {
 
         String response = service.processQuery(fileId, query);
         return ResponseEntity.ok(response);

@@ -25,7 +25,8 @@ import java.util.List;
 import java.util.Objects;
 import java.util.UUID;
 
-import static io.github.mgluizbrito.PdfSorgu.utils.FileUploadUtils.*;
+import static io.github.mgluizbrito.PdfSorgu.utils.FileUploadUtils.cleanUpTempFile;
+import static io.github.mgluizbrito.PdfSorgu.utils.FileUploadUtils.convertMultipartFileToFile;
 
 @RestController
 @RequestMapping("v1/pdf")
@@ -37,7 +38,7 @@ public class PdfController {
 
     @SneakyThrows
     @PostMapping
-    public ResponseEntity<UploadResponseDTO> upload(@RequestParam("file") MultipartFile file){
+    public ResponseEntity<UploadResponseDTO> upload(@RequestParam("file") MultipartFile file) {
         if (file == null || file.isEmpty()) throw new InvalidFieldException("file", "You must to pass a file");
 
         String fileName = StringUtils.cleanPath(Objects.requireNonNull(file.getOriginalFilename()));
@@ -51,10 +52,13 @@ public class PdfController {
 
         String fileHash;
         File tempFile = convertMultipartFileToFile(file, "hash_validation");
-        try (InputStream is = new FileInputStream(tempFile)) { fileHash = hash.calculateFileHash(is); }
-        if (service.existsByHash(fileHash)) throw new DuplicateRecordException("Duplicate document already processed: " + newFileId);
+        try (InputStream is = new FileInputStream(tempFile)) {
+            fileHash = hash.calculateFileHash(is);
+        }
+        if (service.existsByHash(fileHash))
+            throw new DuplicateRecordException("Duplicate document already processed: " + newFileId);
 
-        try{
+        try {
 
             Path targetLocation = fileStorageLocation.resolve(newFileName);
             file.transferTo(targetLocation);
@@ -66,17 +70,17 @@ public class PdfController {
                     .path(newFileName)
                     .toUriString();
 
-        return new ResponseEntity<UploadResponseDTO>(new UploadResponseDTO(
-                "PDF uploaded successfully!",
-                fileName,
-                newFileId,
-                fileUri
-        ), HttpStatus.CREATED);
+            return new ResponseEntity<UploadResponseDTO>(new UploadResponseDTO(
+                    "PDF uploaded successfully!",
+                    fileName,
+                    newFileId,
+                    fileUri
+            ), HttpStatus.CREATED);
 
         } catch (IOException e) {
             return ResponseEntity.badRequest().build();
 
-        }finally {
+        } finally {
             cleanUpTempFile(tempFile);
         }
     }
