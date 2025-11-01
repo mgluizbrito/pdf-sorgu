@@ -22,8 +22,20 @@ spring:
     show-sql: true
 
   ai:
+#    model:
+#      chat: google-genai
+#      embedding: ollama
+
+    google:
+      genai:
+        api-key: ${GEMINI_API_KEY}
+        chat:
+          options:
+            model: gemini-2.0-flash-lite
+
     ollama:
       base-url: http://localhost:11434
+
       embedding:
         options:
           model: nomic-embed-text
@@ -45,6 +57,13 @@ spring:
 #logging:
 #  level:
 #    org.springframework.web: ERROR
+
+server:
+  servlet:
+    session:
+      timeout: 60000
+  tomcat:
+    connection-timeout: 60000
 
 file:
   upload-dir: uploads

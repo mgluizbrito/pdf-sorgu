@@ -22,15 +22,24 @@ configurations {
 
 repositories {
 	mavenCentral()
+	maven { url = uri("https://repo.spring.io/milestone") }
+	maven { url = uri("https://repo.spring.io/snapshot") }
+	maven {
+		name = "Central Portal Snapshots"
+		url = uri("https://central.sonatype.com/repository/maven-snapshots/")
+	}
 }
 
-extra["springAiVersion"] = "1.0.3"
+extra["springAiVersion"] = "1.1.0-M3"
 
 dependencies {
 	implementation("org.springframework.boot:spring-boot-starter-data-jpa")
 	implementation("org.springframework.boot:spring-boot-starter-web")
+
+	implementation(platform("org.springframework.ai:spring-ai-bom:${property("springAiVersion")}"))
 	implementation("org.springframework.ai:spring-ai-starter-vector-store-pgvector")
-	implementation("org.springframework.ai:spring-ai-starter-model-ollama")
+	implementation("org.springframework.ai:spring-ai-ollama")
+	implementation("org.springframework.ai:spring-ai-google-genai")
 	implementation("org.springframework.ai:spring-ai-pdf-document-reader")
 
 
@@ -48,11 +57,11 @@ dependencies {
 	testRuntimeOnly("org.junit.platform:junit-platform-launcher")
 }
 
-dependencyManagement {
-	imports {
-		mavenBom("org.springframework.ai:spring-ai-bom:${property("springAiVersion")}")
-	}
-}
+//dependencyManagement {
+//	imports {
+//		mavenBom("org.springframework.ai:spring-ai-bom:${property("springAiVersion")}")
+//	}
+//}
 
 tasks.withType<Test> {
 	useJUnitPlatform()
