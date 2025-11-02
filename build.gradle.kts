@@ -2,10 +2,11 @@ plugins {
 	java
 	id("org.springframework.boot") version "3.5.7"
 	id("io.spring.dependency-management") version "1.1.7"
+	id("org.graalvm.buildtools.native") version "0.10.6"
 }
 
 group = "io.github.mgluizbrito"
-version = "0.0.1"
+version = "0.2"
 description = "Retrieval Augmented Generation (RAG) system for answering questions based on the content of PDF files"
 
 java {
@@ -13,6 +14,8 @@ java {
 		languageVersion = JavaLanguageVersion.of(21)
 	}
 }
+
+tasks.named<org.springframework.boot.gradle.tasks.bundling.BootBuildImage>("bootBuildImage"){}
 
 configurations {
 	compileOnly {
@@ -35,6 +38,7 @@ extra["springAiVersion"] = "1.1.0-M3"
 dependencies {
 	implementation("org.springframework.boot:spring-boot-starter-data-jpa")
 	implementation("org.springframework.boot:spring-boot-starter-web")
+	implementation("org.springframework.boot:spring-boot-starter-security")
 
 	implementation(platform("org.springframework.ai:spring-ai-bom:${property("springAiVersion")}"))
 	implementation("org.springframework.ai:spring-ai-starter-vector-store-pgvector")
