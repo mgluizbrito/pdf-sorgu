@@ -39,6 +39,9 @@ dependencies {
 	implementation("org.springframework.boot:spring-boot-starter-data-jpa")
 	implementation("org.springframework.boot:spring-boot-starter-web")
 	implementation("org.springframework.boot:spring-boot-starter-security")
+//	implementation("org.springframework.boot:spring-boot-starter-oauth2-resource-server")
+	implementation("com.auth0:java-jwt:4.5.0")
+	implementation("org.springframework.boot:spring-boot-starter-validation")
 
 	implementation(platform("org.springframework.ai:spring-ai-bom:${property("springAiVersion")}"))
 	implementation("org.springframework.ai:spring-ai-starter-vector-store-pgvector")

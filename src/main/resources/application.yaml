@@ -19,7 +19,6 @@ spring:
   jpa:
     hibernate:
       ddl-auto: update
-    show-sql: true
 
   servlet:
     multipart:
@@ -39,3 +38,9 @@ server:
 
 file:
   upload-dir: uploads
+
+api:
+  security:
+    jwt:
+      secret: ${JWT_SECRET}
+      expiration-seconds: 600

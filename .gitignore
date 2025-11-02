@@ -7,6 +7,10 @@ uploads/*
 # 4. Reverte a exclusão do arquivo simple.pdf dentro do diretório uploads
 !uploads/simple.pdf
 
+*.key
+*.pem
+*.pub
+
 HELP.md
 .gradle
 build/
@@ -44,3 +48,4 @@ out/
 
 ### VS Code ###
 .vscode/
+/src/main/resources/private.pem
