@@ -17,7 +17,7 @@ public class WebConfig implements WebMvcConfigurer {
         Path downloadPath = Paths.get(DOWNLOAD_DIR);
         String absolutePath = downloadPath.toFile().getAbsolutePath();
 
-        registry.addResourceHandler("/v1/files/**")
+        registry.addResourceHandler("/files/**")
                 .addResourceLocations("file:" + absolutePath + "/");
     }
 }

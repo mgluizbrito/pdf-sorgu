@@ -66,7 +66,7 @@ public class PdfController {
             service.processDocument(newFileId, targetLocation, fileName, fileHash);
 
             String fileUri = ServletUriComponentsBuilder.fromCurrentContextPath()
-                    .path("/v1/files/")
+                    .path("/files/")
                     .path(newFileName)
                     .toUriString();
 
