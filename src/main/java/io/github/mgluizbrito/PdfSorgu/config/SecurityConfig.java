@@ -32,26 +32,21 @@ public class SecurityConfig {
                 .sessionManagement(s -> s.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authorizeHttpRequests(request -> {
 
-                    request.requestMatchers("/auth/**").permitAll();
+                    request.requestMatchers(
+                            "/auth/**",
+                            "/v1/files/**",
+                            "/v1/api-docs/**",
+                            "/v2/api-docs/**",
+                            "/v3/api-docs/**",
+                            "/swagger-resources/**",
+                            "/swagger-ui.html",
+                            "/swagger-ui/**",
+                            "/webjars/**"
+                    ).permitAll();
                     request.anyRequest().authenticated();
                 })
                 .addFilterBefore(filter, UsernamePasswordAuthenticationFilter.class)
                 .build();
-    }
-
-    @Bean
-    public WebSecurityCustomizer webSecurityCustomizer(){
-        return web -> {
-            web.ignoring().requestMatchers(
-                "/v1/api-docs/**",
-                "/v2/api-docs/**",
-                "/v3/api-docs/**",
-                "/swagger-resources/**",
-                "/swagger-ui.html",
-                "/swagger-ui/**",
-                "/webjars/**"
-            );
-        };
     }
 
     @Bean

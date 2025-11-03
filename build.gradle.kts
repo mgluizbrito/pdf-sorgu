@@ -40,7 +40,6 @@ dependencies {
 	implementation("org.springframework.boot:spring-boot-starter-web")
 	implementation("org.springframework.boot:spring-boot-starter-security")
 //	implementation("org.springframework.boot:spring-boot-starter-oauth2-resource-server")
-	implementation("com.auth0:java-jwt:4.5.0")
 	implementation("org.springframework.boot:spring-boot-starter-validation")
 
 	implementation(platform("org.springframework.ai:spring-ai-bom:${property("springAiVersion")}"))
@@ -49,6 +48,9 @@ dependencies {
 	implementation("org.springframework.ai:spring-ai-google-genai")
 	implementation("org.springframework.ai:spring-ai-pdf-document-reader")
 
+	implementation("org.apache.commons:commons-lang3:3.18.0")
+	implementation("com.auth0:java-jwt:4.5.0")
+	implementation("org.springdoc:springdoc-openapi-starter-webmvc-ui:2.8.13")
 
 	compileOnly("org.projectlombok:lombok")
 

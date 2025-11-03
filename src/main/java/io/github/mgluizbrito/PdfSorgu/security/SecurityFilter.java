@@ -30,7 +30,10 @@ public class SecurityFilter extends OncePerRequestFilter {
         String token = this.recoverToken(request);
         String login = service.validateToken(token);
 
-        if (login == null) filterChain.doFilter(request, response);
+        if (login == null) {
+            filterChain.doFilter(request, response);
+            return;
+        }
 
         User user = repository.findByEmail(login).orElse(null);
         List<SimpleGrantedAuthority> roleUser = Collections.singletonList(new SimpleGrantedAuthority("ROLE_USER"));

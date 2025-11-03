@@ -36,6 +36,23 @@ server:
   tomcat:
     connection-timeout: 60000
 
+springdoc:
+  swagger-ui:
+    path: /swagger-ui.html
+    url: /v3/api-docs
+
+  api-docs:
+    path: /v3/api-docs
+  override-with-generic-response: false
+
+management:
+  server:
+    port: 9090
+  endpoints:
+    web:
+      exposure:
+        include: health, beans, logfile, metrics
+
 file:
   upload-dir: uploads
 
