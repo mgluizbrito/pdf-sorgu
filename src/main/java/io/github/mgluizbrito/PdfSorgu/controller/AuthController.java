@@ -7,6 +7,7 @@ import io.github.mgluizbrito.PdfSorgu.model.RoleEnum;
 import io.github.mgluizbrito.PdfSorgu.model.User;
 import io.github.mgluizbrito.PdfSorgu.repository.UserRepository;
 import io.github.mgluizbrito.PdfSorgu.security.TokenService;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
@@ -25,6 +26,7 @@ import java.util.Set;
 @RestController
 @RequestMapping("auth")
 @RequiredArgsConstructor
+@Tag(name = "Authentication", description = "User Login and Registration Endpoints")
 public class AuthController {
 
     private final UserRepository repository;

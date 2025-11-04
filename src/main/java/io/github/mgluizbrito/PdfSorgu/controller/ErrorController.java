@@ -1,6 +1,8 @@
 package io.github.mgluizbrito.PdfSorgu.controller;
 
 import io.github.mgluizbrito.PdfSorgu.dto.ExceptionResponse;
+import io.swagger.v3.oas.annotations.Hidden;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.servlet.RequestDispatcher;
 import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.http.HttpStatus;
@@ -10,6 +12,7 @@ import org.springframework.web.bind.annotation.RestController;
 import java.util.List;
 
 @RestController
+@Hidden
 public class ErrorController implements org.springframework.boot.web.servlet.error.ErrorController {
 
     private static ExceptionResponse methodNotAllowedExceptionResponse() {

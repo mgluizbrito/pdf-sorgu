@@ -6,8 +6,15 @@ import io.github.mgluizbrito.PdfSorgu.exceptions.InvalidFieldException;
 import io.github.mgluizbrito.PdfSorgu.properties.FileStorageProperties;
 import io.github.mgluizbrito.PdfSorgu.service.DocumentService;
 import io.github.mgluizbrito.PdfSorgu.service.HashService;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.media.Content;
+import io.swagger.v3.oas.annotations.media.Schema;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.SneakyThrows;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.*;
@@ -30,6 +37,7 @@ import static io.github.mgluizbrito.PdfSorgu.utils.FileUploadUtils.convertMultip
 
 @RestController
 @RequestMapping("v1/pdf")
+@Tag(name = "PDF Upload", description = "Endpoint for securely uploading and processing PDF documents for RAG.")
 public class PdfController {
 
     private final DocumentService service;
@@ -37,7 +45,26 @@ public class PdfController {
     private final HashService hash;
 
     @SneakyThrows
-    @PostMapping
+    @PostMapping(consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+    @Operation(
+            summary = "Upload PDF Document",
+            description = "Uploads a PDF file, calculates its hash, checks for duplicates, and initiates document processing for the RAG system.",
+            security = @SecurityRequirement(name = "Bearer"),
+            responses = {
+                    @ApiResponse(
+                            responseCode = "201",
+                            description = "PDF uploaded and processing initiated successfully.",
+                            content = @Content(
+                                    mediaType = "application/json",
+                                    schema = @Schema(implementation = UploadResponseDTO.class)
+                            )
+                    ),
+                    @ApiResponse(responseCode = "400", description = "Invalid file type (not PDF), file is empty, or internal I/O error."),
+                    @ApiResponse(responseCode = "401", description = "Unauthorized (Missing or invalid JWT token)."),
+                    @ApiResponse(responseCode = "409", description = "Duplicate document detected (file with same hash already exists).",
+                            content = @Content(mediaType = "application/json", schema = @Schema(implementation = DuplicateRecordException.class))) // Use a exceção ou um DTO de erro
+            }
+    )
     public ResponseEntity<UploadResponseDTO> upload(@RequestParam("file") MultipartFile file) {
         if (file == null || file.isEmpty()) throw new InvalidFieldException("file", "You must to pass a file");
 
