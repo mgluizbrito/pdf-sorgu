@@ -34,7 +34,7 @@ public class SecurityConfig {
 
                     request.requestMatchers(
                             "/auth/**",
-                            "/v1/files/**",
+                            "/files/**",
                             "/v1/api-docs/**",
                             "/v2/api-docs/**",
                             "/v3/api-docs/**",
