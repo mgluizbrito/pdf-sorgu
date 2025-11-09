@@ -1,8 +1,10 @@
 package io.github.mgluizbrito.PdfSorgu.config;
 
+import io.github.mgluizbrito.PdfSorgu.security.Bucket4jRateLimitFilter;
 import io.github.mgluizbrito.PdfSorgu.security.SecurityFilter;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
@@ -23,7 +25,7 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 public class SecurityConfig {
 
     @Bean
-    public SecurityFilterChain securityFilterChain(HttpSecurity http, SecurityFilter filter) throws Exception {
+    public SecurityFilterChain securityFilterChain(HttpSecurity http, SecurityFilter filter, Bucket4jRateLimitFilter rateLimitFilter) throws Exception {
         return http
                 .csrf(AbstractHttpConfigurer::disable)
                 .cors(cors -> cors.configure(http))
@@ -41,11 +43,17 @@ public class SecurityConfig {
                             "/swagger-resources/**",
                             "/swagger-ui.html",
                             "/swagger-ui/**",
-                            "/webjars/**"
+                            "/webjars/**",
+                            "/user/status"
                     ).permitAll();
+
+                    request.requestMatchers(HttpMethod.POST, "/v1/pdf").permitAll();
+                    request.requestMatchers(HttpMethod.GET, "/v1/query/**").permitAll();
+
                     request.anyRequest().authenticated();
                 })
                 .addFilterBefore(filter, UsernamePasswordAuthenticationFilter.class)
+                .addFilterAfter(rateLimitFilter, SecurityFilter.class)
                 .build();
     }
 

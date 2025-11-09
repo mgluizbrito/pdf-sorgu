@@ -41,6 +41,7 @@ dependencies {
 	implementation("org.springframework.boot:spring-boot-starter-security")
 //	implementation("org.springframework.boot:spring-boot-starter-oauth2-resource-server")
 	implementation("org.springframework.boot:spring-boot-starter-validation")
+	implementation("com.bucket4j:bucket4j-core:8.10.1")
 
 	implementation(platform("org.springframework.ai:spring-ai-bom:${property("springAiVersion")}"))
 	implementation("org.springframework.ai:spring-ai-starter-vector-store-pgvector")
